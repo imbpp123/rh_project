@@ -32,6 +32,11 @@ class Hotel
     private $rooms;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $chainId;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -90,6 +95,24 @@ class Hotel
     public function setRooms(int $rooms): self
     {
         $this->rooms = $rooms;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getChainId(): ?int
+    {
+        return $this->chainId;
+    }
+
+    /**
+     * @param int $chainId
+     * @return $this
+     */
+    public function setChainId(int $chainId): self
+    {
+        $this->chainId = $chainId;
         return $this;
     }
 }

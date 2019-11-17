@@ -2,55 +2,70 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use App\Repository\HotelRepository;
+use App\Repository\ReviewRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
-class ApiController extends Controller
+/**
+ * Old controller that is not SOLID
+ * It can do everything
+ * I just refactored it. It works.
+ */
+class ApiController extends AbstractController
 {
     /**
-     * @Route("/api/average", name="average")
+     * @Route("/api/average", name="average", methods={"GET"})
      */
-    public function getAverage(Request $request)
+    public function getAverage(Request $request, ReviewRepository $reviewRepository)
     {
         $hotelId = $request->get('hotelId');
 
         if ($hotelId === null) {
-            throw new \Exception('Hotel not found.');
+            return new Response('Hotel not found.', Response::HTTP_NOT_FOUND);
         }
 
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $average = $em->getConnection()->executeQuery('SELECT avg(score) as score FROM review WHERE hotel_id = '.$hotelId)->fetch(\PDO::FETCH_ASSOC);
-
-        return new Response($average['score']);
+        return new JsonResponse($reviewRepository->getHotelAvgScore($hotelId)['score']);
     }
 
     /**
-     * @Route("/api/reviews", name="review_list")
+     * @Route("/api/reviews", name="review_list", methods={"GET"})
+     * @param Request $request
+     * @param ReviewRepository $reviewRepository
+     * @param SerializerInterface $serializer
+     * @return JsonResponse
      */
-    public function getReviews(Request $request)
+    public function getReviews(Request $request, ReviewRepository $reviewRepository, SerializerInterface $serializer)
     {
         $hotelId = $request->get('hotelId');
 
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        if ($hotelId === null) {
-            $reviews = $em->getConnection()->executeQuery('SELECT * FROM review')->fetchAll(\PDO::FETCH_ASSOC);
+        if (null === $hotelId) {
+            $reviews = $reviewRepository->findAll();
         } else {
-            $reviews = $em->getConnection()->executeQuery('SELECT * FROM review WHERE hotel_id = ' . $hotelId)->fetchAll(\PDO::FETCH_ASSOC);
+            $reviews = $reviewRepository->findBy(['hotelId' => $hotelId]);
         }
 
-        return new Response(json_encode($reviews));
+        return new JsonResponse(
+            $serializer->serialize($reviews, 'json'),
+            Response::HTTP_OK
+        );
     }
 
     /**
-     * @Route("/api/hotels", name="hotel_list")
+     * @Route("/api/hotels", name="hotel_list", methods={"GET"})
+     * @param HotelRepository $hotelRepository
+     * @param SerializerInterface $serializer
+     * @return JsonResponse
      */
-    public function getHotels(Request $request)
+    public function getHotels(HotelRepository $hotelRepository, SerializerInterface $serializer)
     {
-        $em = $this->container->get('doctrine.orm.entity_manager');
-        $hotels = $em->getConnection()->executeQuery('SELECT * FROM hotel')->fetchAll(\PDO::FETCH_ASSOC);
-
-        return new Response(json_encode($hotels));
+        return new JsonResponse(
+            $serializer->serialize($hotelRepository->findAll(), 'json'),
+            Response::HTTP_OK
+        );
     }
 }

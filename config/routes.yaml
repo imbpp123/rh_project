@@ -1,3 +1,41 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+hotel.get.list:
+    path: /api/v2/hotel
+    methods: ["GET"]
+    defaults:
+        _controller: App\Controller\HotelController::getListAction
+
+hotel.get.review.list:
+    path: /api/v2/hotel/{hotelId}/review
+    requirements:
+        hotelId: '\d+'
+    methods: ["GET"]
+    defaults:
+        _controller: App\Controller\HotelController::getReviewListAction
+
+hotel.get.average:
+    path: /api/v2/hotel/{hotelId}/average
+    requirements:
+        hotelId: '\d+'
+    methods: ["GET"]
+    defaults:
+        _controller: App\Controller\HotelController::getScoreAverageAction
+
+review.get.list:
+    path: /api/v2/review
+    methods: ["GET"]
+    defaults:
+        _controller: App\Controller\ReviewController::getListAction
+
+chain.get.list:
+    path: /api/v2/chain
+    methods: ["GET"]
+    defaults:
+        _controller: App\Controller\ChainController::getListAction
+
+chain.get.hotel:
+    path: /api/v2/chain/{chainId}/hotel
+    requirements:
+        chainId: '\d+'
+    methods: ["GET"]
+    defaults:
+        _controller: App\Controller\ChainController::getHotelListAction
