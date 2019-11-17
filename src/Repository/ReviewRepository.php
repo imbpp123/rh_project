@@ -26,6 +26,6 @@ class ReviewRepository extends ServiceEntityRepository
             ->where('r.hotelId = :hotelId')
             ->setParameter('hotelId', $hotelId)
             ->getQuery();
-        return $queryAvgScore->getScalarResult()[0];
+        return (float) round($queryAvgScore->getScalarResult()[0]['score'], 4);
     }
 }

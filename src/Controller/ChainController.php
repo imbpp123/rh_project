@@ -21,7 +21,9 @@ class ChainController extends AbstractController
     {
         return new JsonResponse(
             $serializer->serialize($chainRepository->findAll(), 'json'),
-            Response::HTTP_OK
+            Response::HTTP_OK,
+            [],
+            true
         );
     }
 
@@ -47,7 +49,9 @@ class ChainController extends AbstractController
         $data = $hotelRepository->findBy(["chainId" => $chainId]);
         return new JsonResponse(
             $serializer->serialize($data, 'json'),
-            Response::HTTP_OK
+            Response::HTTP_OK,
+            [],
+            true
         );
     }
 }

@@ -21,7 +21,9 @@ class HotelController extends AbstractController
     {
         return new JsonResponse(
             $serializer->serialize($hotelRepository->findAll(), 'json'),
-            Response::HTTP_OK
+            Response::HTTP_OK,
+            [],
+            true
         );
     }
 
@@ -47,7 +49,9 @@ class HotelController extends AbstractController
         $reviews = $reviewRepository->findBy(['hotelId' => $hotelId]);
         return new JsonResponse(
             $serializer->serialize($reviews, 'json'),
-            Response::HTTP_OK
+            Response::HTTP_OK,
+            [],
+            true
         );
     }
 
@@ -70,7 +74,9 @@ class HotelController extends AbstractController
 
         return new JsonResponse(
             $reviewRepository->getHotelAvgScore($hotelId),
-            Response::HTTP_OK
+            Response::HTTP_OK,
+            [],
+            true
         );
     }
 }

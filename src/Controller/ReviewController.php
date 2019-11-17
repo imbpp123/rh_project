@@ -19,7 +19,9 @@ class ReviewController extends AbstractController
     {
         return new JsonResponse(
             $serializer->serialize($reviewRepository->findAll(), 'json'),
-            Response::HTTP_OK
+            Response::HTTP_OK,
+            [],
+            true
         );
     }
 }
