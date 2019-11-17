@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+
+  mysql:
+    container_name: $MYSQL_IMAGE
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_DATABASE: "develop_db"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+    ports:
+      - 33066:3306
+    volumes:
+      - mysql:/var/lib/mysql
+
+  php-fpm:
+    image: $APP_IMAGE
+    env_file:
+      - ./.env
+      - ./.env.local
+    environment:
+      XDEBUG_ENABLED: 1
+      XDEBUG_CONFIG: remote_host=${REMOTE_HOST}
+    volumes:
+      - ./:/app
+
+  apache:
+    image: $APACHE_IMAGE
+    ports:
+      - '80:80'
+    depends_on:
+      - php-fpm
+    volumes:
+      - ./:/app
+
+# this is set to override default 172 subnet
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.120.0/24
+
+volumes:
+  mysql:
