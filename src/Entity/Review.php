@@ -19,7 +19,7 @@ class Review
     /**
      * @ORM\Column(type="integer")
      */
-    private $hotel_id;
+    private $hotelId;
 
     /**
      * @ORM\Column(type="string")
@@ -31,66 +31,60 @@ class Review
      */
     private $score;
 
-
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    public function getId()
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getHotelId()
+    public function getHotelId(): ?int
     {
-        return $this->hotel_id;
+        return $this->hotelId;
     }
 
     /**
-     * @param mixed $hotel_id
-     * @return Review
+     * @param int $hotelId
+     * @return $this
      */
-    public function setHotelId($hotel_id)
+    public function setHotelId(int $hotelId): self
     {
-        $this->hotel_id = $hotel_id;
+        $this->hotelId = $hotelId;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getText()
+    public function getText(): ?string
     {
         return $this->text;
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      * @return Review
      */
-    public function setText($text)
+    public function setText(string $text): self
     {
         $this->text = $text;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getScore()
+    public function getScore(): ?int
     {
         return $this->score;
     }
 
     /**
-     * @param mixed $score
-     * @return Review
+     * @param int $score
+     * @return $this
      */
-    public function setScore($score)
+    public function setScore(int $score): self
     {
         $this->score = $score;
         return $this;

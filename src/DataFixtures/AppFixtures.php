@@ -19,7 +19,6 @@ class AppFixtures extends Fixture
     public function loadHotels($manager)
     {
         $hotel = new Hotel();
-        $hotel->setId(1);
         $hotel->setName('Hotel Alexanderplatz');
         $hotel->setAddress('Alexanderplatz 1, 10409, Berlin');
         $hotel->setRooms(150);
@@ -27,7 +26,6 @@ class AppFixtures extends Fixture
         $manager->persist($hotel);
 
         $hotel = new Hotel();
-        $hotel->setId(2);
         $hotel->setName('Hotel Alexanderplatz');
         $hotel->setAddress('Alexanderplatz 1, 10409, Berlin');
         $hotel->setRooms(150);
@@ -35,7 +33,6 @@ class AppFixtures extends Fixture
         $manager->persist($hotel);
 
         $hotel = new Hotel();
-        $hotel->setId(3);
         $hotel->setName('Hotel Alexanderplatz');
         $hotel->setAddress('Alexanderplatz 1, 10409, Berlin');
         $hotel->setRooms(150);
@@ -43,7 +40,6 @@ class AppFixtures extends Fixture
         $manager->persist($hotel);
 
         $hotel = new Hotel();
-        $hotel->setId(4);
         $hotel->setName('Hotel Alexanderplatz');
         $hotel->setAddress('Alexanderplatz 1, 10409, Berlin');
         $hotel->setRooms(150);
@@ -51,7 +47,6 @@ class AppFixtures extends Fixture
         $manager->persist($hotel);
 
         $hotel = new Hotel();
-        $hotel->setId(5);
         $hotel->setName('Hotel Alexanderplatz');
         $hotel->setAddress('Alexanderplatz 1, 10409, Berlin');
         $hotel->setRooms(150);
