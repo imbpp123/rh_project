@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReviewRepository")
+ * @ORM\Table(indexes={@ORM\Index(name="hotel_idx", columns={"hotel_id"})})
  */
 class Review
 {

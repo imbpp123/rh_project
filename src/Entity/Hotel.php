@@ -3,9 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HotelRepository")
+ * @ORM\Table(indexes={@ORM\Index(name="chain_idx", columns={"chain_id"})})
+ * @ORM\HasLifecycleCallbacks()
  */
 class Hotel
 {
@@ -15,6 +19,12 @@ class Hotel
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @var UuidInterface
+     * @ORM\Column(type="uuid", unique=true)
+     */
+    private $uuid;
 
     /**
      * @ORM\Column(type="string")
@@ -114,5 +124,21 @@ class Hotel
     {
         $this->chainId = $chainId;
         return $this;
+    }
+
+    /**
+     * @return UuidInterface
+     */
+    public function getUuid(): UuidInterface
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setUuidValue()
+    {
+        $this->uuid = Uuid::getFactory()->uuid4();
     }
 }

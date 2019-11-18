@@ -79,4 +79,9 @@ class HotelController extends AbstractController
             true
         );
     }
+
+    public function getWidgetScoreAction(Request $request)
+    {
+        return new Response($request->get("uuid"));
+    }
 }

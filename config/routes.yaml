@@ -39,3 +39,11 @@ chain.get.hotel:
     methods: ["GET"]
     defaults:
         _controller: App\Controller\ChainController::getHotelListAction
+
+widget.hotel.avgscore:
+    path: /widget/{uuid}.js
+    requirements:
+        uuid: '[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}'
+    methods: ["GET"]
+    defaults:
+        _controller: App\Controller\HotelController::getWidgetScoreAction
