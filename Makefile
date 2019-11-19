@@ -39,6 +39,7 @@ build-apache:
 
 build-app: DOCKERFILE=docker/php-fpm/Dockerfile
 build-app:
+	touch .env.local
 	@mkdir -p ${HOME}/.cache/composer
 	docker build -f ${DOCKERFILE} --pull --target builder \
 		--build-arg DEBUG_TOOLS_ENABLED=1 \
