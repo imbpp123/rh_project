@@ -7,9 +7,6 @@
 /vendor/
 /bin/.phpunit
 /.idea
-/bin/*
-!/bin/console
-!/bin/.gitkeep
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
