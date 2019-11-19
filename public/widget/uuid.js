@@ -26,6 +26,6 @@
         }
     }
     xhr.onload = loadHotel;
-    xhr.open('GET', '/api/v2/hotel/?uuid=' + uuid);
+    xhr.open('GET', '/api/v2/hotel?uuid=' + uuid);
     xhr.send();
 })();
