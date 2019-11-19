@@ -75,4 +75,4 @@ test:
 	docker-compose up -d --force-recreate
 	docker-compose exec mysql bash -c "while ! mysql -h localhost -u root -ppassword -e \"SELECT 1\"; do sleep 1 ;done"
 	docker-compose exec php-fpm bash -c "bin/console doctrine:migrations:migrate -n"
-	docker-compose exec php-fpm bash -c "bin/phpunit"
+	docker-compose exec --user=root php-fpm bash -c "bin/phpunit"
