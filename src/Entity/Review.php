@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ReviewRepository")
- * @ORM\Table(indexes={@ORM\Index(name="hotel_idx", columns={"hotel_id"})})
+ * @ORM\Table(indexes={@ORM\Index(name="hotel_created_at_idx", columns={"hotel_id", "created_at"})})
  */
 class Review
 {
@@ -31,6 +31,16 @@ class Review
      * @ORM\Column(type="integer")
      */
     private $score;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * @return int|null
@@ -88,6 +98,24 @@ class Review
     public function setScore(int $score): self
     {
         $this->score = $score;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     * @return $this
+     */
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 }

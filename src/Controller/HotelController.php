@@ -12,15 +12,38 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class HotelController extends AbstractController
 {
+
     /**
+     * This function creates filter by field array for repository
+     *
+     * @param Request $request
+     * @return array
+     */
+    private function getHotelFilter(Request $request): array
+    {
+        $filter = [];
+        if ($uuid = $request->get("uuid")) {
+            $filter["uuid"] = $uuid;
+        }
+        return $filter;
+    }
+
+    /**
+     * @param Request $request
      * @param HotelRepository $hotelRepository
      * @param SerializerInterface $serializer
      * @return JsonResponse
      */
-    public function getListAction(HotelRepository $hotelRepository, SerializerInterface $serializer)
+    public function getListAction(Request $request, HotelRepository $hotelRepository, SerializerInterface $serializer)
     {
+        if ($filter = $this->getHotelFilter($request)) {
+            $result = $hotelRepository->findBy($filter);
+        } else {
+            $result = $hotelRepository->findAll();
+        }
+
         return new JsonResponse(
-            $serializer->serialize($hotelRepository->findAll(), 'json'),
+            $serializer->serialize($result, 'json'),
             Response::HTTP_OK,
             [],
             true
@@ -72,16 +95,14 @@ class HotelController extends AbstractController
             return new JsonResponse("Hotel not found", Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse(
+        $response = new JsonResponse(
             $reviewRepository->getHotelAvgScore($hotelId),
             Response::HTTP_OK,
             [],
             true
         );
-    }
+        $response->setMaxAge(3600);
 
-    public function getWidgetScoreAction(Request $request)
-    {
-        return new Response($request->get("uuid"));
+        return $response;
     }
 }

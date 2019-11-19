@@ -31,8 +31,17 @@ class ReviewRepositoryTest extends WebTestCase
         $doctrineManager = $this->getDoctrineManager();
         $scoreArray = [10, 5, 7];
 
+        $doctrineManager->persist(
+            $this->createDefaultReview()
+                ->setHotelId(2)
+                ->setScore(20)
+        );
         foreach ($scoreArray as $score) {
-            $doctrineManager->persist($this->createDefaultReview()->setScore($score));
+            $doctrineManager->persist(
+                $this->createDefaultReview()
+                    ->setHotelId(1)
+                    ->setScore($score)
+            );
         }
         $doctrineManager->flush();
 
@@ -47,6 +56,47 @@ class ReviewRepositoryTest extends WebTestCase
         self::assertEquals(
             0,
             $this->repository->getHotelAvgScore(1)
+        );
+    }
+
+    public function testGetHotelAvgScoreWithStartFrom()
+    {
+        $doctrineManager = $this->getDoctrineManager();
+        $scoreArray = [10, 5, 7];
+
+        $doctrineManager->persist(
+            $this->createDefaultReview()
+                ->setHotelId(2)
+                ->setScore(20)
+        );
+        foreach ($scoreArray as $score) {
+            $doctrineManager->persist(
+                $this->createDefaultReview()
+                    ->setHotelId(1)
+                    ->setScore($score)
+                    ->setCreatedAt(new \DateTime())
+            );
+        }
+
+        $doctrineManager->persist(
+            $this->createDefaultReview()
+                ->setHotelId(1)
+                ->setScore(30)
+                ->setCreatedAt((new \DateTime())->modify("-10years"))
+        );
+        $doctrineManager->flush();
+
+        self::assertEquals(
+            round(array_sum($scoreArray) / count($scoreArray), 4),
+            $this->repository->getHotelAvgScore(1, 365)
+        );
+        self::assertEquals(
+            13,
+            $this->repository->getHotelAvgScore(1, -1)
+        );
+        self::assertEquals(
+            13,
+            $this->repository->getHotelAvgScore(1, 0)
         );
     }
 

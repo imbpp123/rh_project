@@ -57,16 +57,6 @@ RUN composer global require hirak/prestissimo --no-progress
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-FROM base AS app_with_tests
-USER www-data
-ENV APP_ENV dev
-ENV SKIP_WARMUP=0
-COPY --chown=www-data:www-data . /app
-
-# ----------------------------------------------------------------------------------------------------------------------
-
 FROM base AS app
 USER www-data
-ENV APP_ENV prod
 ENV SKIP_WARMUP=0
-COPY --from=app_with_tests --chown=www-data:www-data /app /app

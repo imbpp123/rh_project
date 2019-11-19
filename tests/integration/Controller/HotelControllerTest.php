@@ -39,6 +39,25 @@ class HotelControllerTest extends WebTestCase
         $this->assertEquals($data, $client->getResponse()->getContent());
     }
 
+    public function testGetListByUuidAction()
+    {
+        $entity1 = $this->createDefaultHotel();
+        $entity2 = $this->createDefaultHotel();
+
+        $doctrineManager = $this->getDoctrineManager();
+        $doctrineManager->persist($entity1);
+        $doctrineManager->persist($entity2);
+        $doctrineManager->flush();
+
+        $client = static::createClient();
+
+        $client->request('GET', '/api/v2/hotel?uuid=' . $entity1->getUuid());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $data = static::$container->get('serializer')->serialize([$entity1], 'json');
+        $this->assertEquals($data, $client->getResponse()->getContent());
+    }
+
     public function testGetListActionNoData()
     {
         $client = static::createClient();
@@ -133,6 +152,7 @@ class HotelControllerTest extends WebTestCase
             ($review1->getScore() + $review2->getScore()) / 2,
             $client->getResponse()->getContent()
         );
+        $this->assertEquals(3600, $client->getResponse()->getMaxAge());
     }
 
     public function testGetScoreAverageActionNoReview()

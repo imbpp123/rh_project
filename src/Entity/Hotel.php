@@ -127,11 +127,11 @@ class Hotel
     }
 
     /**
-     * @return UuidInterface
+     * @return string
      */
-    public function getUuid(): UuidInterface
+    public function getUuid(): string
     {
-        return $this->uuid;
+        return (string) $this->uuid;
     }
 
     /**

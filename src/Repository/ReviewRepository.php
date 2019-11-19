@@ -19,13 +19,21 @@ class ReviewRepository extends ServiceEntityRepository
         parent::__construct($registry, Review::class);
     }
 
-    public function getHotelAvgScore(int $hotelId)
+    public function getHotelAvgScore(int $hotelId, int $dayOffset = null)
     {
-        $queryAvgScore = $this->createQueryBuilder('r')
+        $query = $this->createQueryBuilder('r')
             ->select("AVG(r.score) as score")
             ->where('r.hotelId = :hotelId')
             ->setParameter('hotelId', $hotelId)
-            ->getQuery();
-        return (float) round($queryAvgScore->getScalarResult()[0]['score'], 4);
+        ;
+
+        if ($dayOffset > 0) {
+            $query->andWhere('r.createdAt BETWEEN :from AND :to')
+                ->setParameter('from', (new \DateTime())->modify("-{$dayOffset}days"))
+                ->setParameter('to', new \DateTime())
+                ;
+        }
+
+        return (float) round($query->getQuery()->getScalarResult()[0]['score'], 4);
     }
 }
