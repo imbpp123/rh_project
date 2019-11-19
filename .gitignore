@@ -8,6 +8,7 @@
 /bin/.phpunit
 /.idea
 /bin/*
+!/bin/.gitkeep
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###

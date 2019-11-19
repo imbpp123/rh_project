@@ -1,0 +1,30 @@
+GET http://localhost/api/hotels
+
+###
+GET http://localhost/api/reviews?hotelId=1
+
+###
+GET http://localhost/api/average?hotelId=1
+
+###
+GET http://localhost/api/v2/hotel
+
+###
+GET http://localhost/api/v2/hotel/1/review
+
+###
+GET http://localhost/api/v2/hotel/2/average
+
+###
+GET http://localhost/api/v2/review
+
+###
+GET http://localhost/api/v2/chain
+
+###
+GET http://localhost/api/v2/chain/1/hotel
+
+###
+GET http://localhost/widget/d9735a57-51ba-4d8a-8546-08b7cd731fae.js
+
+###
