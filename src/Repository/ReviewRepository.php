@@ -36,4 +36,46 @@ class ReviewRepository extends ServiceEntityRepository
 
         return (float) round($query->getQuery()->getScalarResult()[0]['score'], 4);
     }
+
+    public function getDailyAvgScore(int $hotelId, \DateTime $startDate, \DateTime $endDate)
+    {
+        $query = $this->createQueryBuilder('r')
+            ->select("AVG(r.score) as score, DAYOFYEAR(r.createdAt) as key_field")
+            ->where("r.hotelId = :hotelId")
+            ->andWhere('r.createdAt BETWEEN :from AND :to')
+            ->groupBy("key_field")
+            ->setParameter("hotelId", $hotelId)
+            ->setParameter('from', $startDate)
+            ->setParameter('to', $endDate)
+        ;
+        return $query->getQuery()->getScalarResult();
+    }
+
+    public function getWeeklyAvgScore(int $hotelId, \DateTime $startDate, \DateTime $endDate)
+    {
+        $query = $this->createQueryBuilder('r')
+            ->select(["AVG(r.score) as score", "week(r.createdAt) as key_field"])
+            ->where("r.hotelId = :hotelId")
+            ->andWhere('r.createdAt BETWEEN :from AND :to')
+            ->groupBy("key_field")
+            ->setParameter("hotelId", $hotelId)
+            ->setParameter('from', $startDate)
+            ->setParameter('to', $endDate)
+        ;
+        return $query->getQuery()->getScalarResult();
+    }
+
+    public function getMonthlyAvgScore(int $hotelId, \DateTime $startDate, \DateTime $endDate)
+    {
+        $query = $this->createQueryBuilder('r')
+            ->select(["AVG(r.score) as score", "month(r.createdAt) as key_field"])
+            ->where("r.hotelId = :hotelId")
+            ->andWhere('r.createdAt BETWEEN :from AND :to')
+            ->groupBy("key_field")
+            ->setParameter("hotelId", $hotelId)
+            ->setParameter('from', $startDate)
+            ->setParameter('to', $endDate)
+        ;
+        return $query->getQuery()->getScalarResult();
+    }
 }
